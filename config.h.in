@@ -1,0 +1,16 @@
+/* config.h.in.  Generated automatically from configure.in by autoheader.  */
+
+/* Define to empty if the keyword does not work.  */
+#undef const
+
+/* Define if you have the ANSI C header files.  */
+#undef STDC_HEADERS
+
+/* Define if you have the <exception> header file.  */
+#undef HAVE_EXCEPTION
+
+/* Define if you have the <new> header file.  */
+#undef HAVE_NEW
+
+/* Define if you have the <string> header file.  */
+#undef HAVE_STRING

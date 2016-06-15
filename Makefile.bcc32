@@ -1,0 +1,81 @@
+# Generated automatically from Makefile.in by configure.
+# $Id: Makefile.bcc32,v 1.1.1.1 2002-02-20 17:09:49 cbilderback Exp $
+# Last modified by $Author: cbilderback $ on $Date: 2002-02-20 17:09:49 $
+SHELL		= /bin/sh
+
+prefix		= D:\\Chris
+exec_prefix	= ${prefix}
+host_os		= cygwin32
+srcdir		= .
+top_srcdir	= .
+enable_debug	= no
+
+# Set up the include paths
+INCPATHS = -I$(prefix)\\include
+
+# Where to install the include files
+INCDEST = $(prefix)\\include\\ProjectionMesh
+
+# Where to install the library files
+LIBDEST = $(prefix)\\lib\\bcc
+
+# Set our compiler options
+ifeq ($(enable_debug),yes)
+DEBUG = -v
+else
+DEBUG = -O2 -w- -6
+endif
+
+# Compiler and other defs
+CC		= bcc32
+CXX		= bcc32
+CXXFLAGS	= $(DEBUG) $(INCPATHS)
+RANLIB		= ranlib
+
+SRCS =	PmeshException.cpp	\
+	ProjectionMesh.cpp	\
+	MeshNode.cpp
+
+# Dependencies for the program
+OBJS=$(SRCS:.cpp=.obj)
+
+.SUFFIXES: .obj .cpp
+
+# Suffix Rules
+.cpp.obj:
+	$(CXX) $(CXXFLAGS) -c $<
+
+all: libProjectionMesh.lib
+	@@echo "libProjectionMesh.lib successfully built."
+
+libProjectionMesh.lib: $(OBJS)
+	tlib libProjectionMesh.lib /a $(OBJS)
+
+install: libProjectionMesh.lib
+	$(top_srcdir)/config/mkinstalldirs $(INCDEST)
+	$(top_srcdir)/config/mkinstalldirs $(LIBDEST)
+	cp *.h $(INCDEST)
+	cp libProjectionMesh.lib $(LIBDEST)
+
+clean::
+	rm -f libProjectionMesh.lib core *~ $(OBJS)
+
+distclean: clean
+	rm -f Makefile config.h config.status config.cache config.log
+
+uninstall:
+	rm -rf $(INCDEST)
+	rm -f $(LIBDEST)/libProjectionMesh.lib
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,38 @@
+dnl Process this file with autoconf to produce a configure script.
+AC_INIT(ProjectionMesh.h)
+AC_CONFIG_AUX_DIR(`pwd`/config)
+
+dnl Changed here since my stuff lives under the root of my home dir
+AC_PREFIX_DEFAULT($HOME)
+
+dnl Define C++ as the language to use
+AC_LANG_CPLUSPLUS
+
+dnl Check for the machine type
+AC_CANONICAL_HOST
+
+dnl Add our arguments
+AC_ARG_ENABLE(debug,
+[  --enable-debug	  Generate debugging information during compilation.],
+enable_debug=yes,enable_debug=no)
+AC_SUBST(enable_debug)
+
+dnl Checks for programs.
+AC_PROG_CC
+AC_PROG_CXX
+AC_PROG_RANLIB
+
+dnl Checks for libraries.
+
+dnl Checks for header files.
+AC_HEADER_STDC
+AC_CHECK_HEADERS([string new exception],,
+[echo "Unable to locate all necessary headers.  Consult config.log for details"; exit 1])
+
+
+dnl Checks for typedefs, structures, and compiler characteristics.
+AC_C_CONST
+
+dnl Checks for library functions.
+
+AC_OUTPUT(Makefile)

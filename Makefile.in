@@ -1,0 +1,92 @@
+# $Id: Makefile.in,v 1.1.1.1 2002-02-20 17:09:49 cbilderback Exp $
+# Last modified by $Author: cbilderback $ on $Date: 2002-02-20 17:09:49 $
+SHELL		= /bin/sh
+
+prefix		= @prefix@
+exec_prefix	= @exec_prefix@
+host_os		= @host_os@
+srcdir		= @srcdir@
+top_srcdir	= @top_srcdir@
+enable_debug	= @enable_debug@
+
+# Set up the include paths
+INCPATHS = -I$(prefix)/include
+
+# Where to install the include files
+INCDEST = $(prefix)/include/ProjectionMesh
+
+# Where to install the library files
+LIBDEST = $(prefix)/lib
+
+# Set our compiler options
+ifeq ($(enable_debug),yes)
+DEBUG = -g -Wall
+else
+DEBUG = -O2
+endif
+
+# Compiler and other defs
+CC		= @CC@
+CXX		= @CXX@
+CXXFLAGS	= $(DEBUG) $(INCPATHS)
+RANLIB		= @RANLIB@
+
+SRCS =	PmeshException.cpp	\
+	ProjectionMesh.cpp	\
+	MeshNode.cpp
+
+# Dependencies for the program
+OBJS=$(SRCS:.cpp=.o)
+
+.SUFFIXES: .o .cpp
+
+# Suffix Rules
+.cpp.o:
+	$(CXX) $(CXXFLAGS) -c $<
+
+all: libProjectionMesh.a
+	@@echo "libProjectionmesh.a successfully built."
+
+libProjectionMesh.a: $(OBJS)
+	ar rsu libProjectionMesh.a $(OBJS)
+
+install: libProjectionMesh.a
+	$(top_srcdir)/config/mkinstalldirs $(INCDEST)
+	$(top_srcdir)/config/mkinstalldirs $(LIBDEST)
+	cp *.h $(INCDEST)
+	cp libProjectionMesh.a $(LIBDEST)
+
+clean::
+	rm -f libProjectionMesh.a core *~ $(OBJS)
+
+distclean: clean
+	rm -f Makefile config.h config.status config.cache config.log
+
+uninstall:
+	rm -rf $(INCDEST)
+	rm -f $(LIBDEST)/libProjectionMesh.a
+
+# Automatically rerun configure if the .in files have changed
+$(srcdir)/configure:	configure.in
+	cd $(srcdir) && autoconf
+
+$(srcdir)/stamp-h:  config.status
+	./config.status
+
+$(srcdir)/Makefile: Makefile.in config.status
+	./config.status
+
+$(srcdir)/config.status: configure
+	./config.status --recheck
+
+
+
+
+
+
+
+
+
+
+
+
